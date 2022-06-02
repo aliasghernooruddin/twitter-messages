@@ -23,13 +23,24 @@ CORS(app)
 
 @app.route('/')
 def get_direct_messages():
-    direct_messages = api.get_direct_messages()
 
+    direct_messages = api.get_direct_messages()
+    id = str(api.verify_credentials().id)
     senders = []
+    unique = [id]
+
     for messages in direct_messages:
+        sender = messages.message_create['target']['recipient_id']
+        if sender not in unique:      
+            name = get_user_name(sender)
+            senders.append({'id': sender, 'name': name})
+            unique.append(sender)
+
         sender = messages.message_create['sender_id']
-        name = get_user_name(sender)
-        senders.append({'id': sender, 'name': name})
+        if sender not in unique:      
+            name = get_user_name(sender)
+            senders.append({'id': sender, 'name': name})
+            unique.append(sender)
 
     response = {'status': 200, 'data': senders}
     return jsonify(response)
