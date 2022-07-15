@@ -1,0 +1,22 @@
+Notes:
+
+followups : 
+	The messages sent in reply to a another person's message is taken as followups.
+
+followup_content:
+	The text of the very first message which was sent as a reply to another person's message is taken as followup_content.
+
+sent_message_count:
+	The total number of messages sent by a user through out all the conversation will be considered as sent_message_count.
+
+total_followups:
+	The count of individuals to whom the user has replied.
+
+total_initial_messages:
+	The count of individuals with whom the user has initiated the conversation regardless of the response from the individual.
+	
+response_rate:
+	In order to calculate the response_rate I have choosen outreach 
+	
+	formula:
+		response received / total number of conversations

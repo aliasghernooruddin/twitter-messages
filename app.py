@@ -1,6 +1,4 @@
-from functools import total_ordering
 import json
-from numpy import outer, positive
 import tweepy
 from flask import Flask, jsonify
 import os
