@@ -1,9 +1,19 @@
-export class ResponseModel {
-    data: Array<{ id: Number; name: String }>;
+export class SendersResponseModel {
+    senders: Array<{ id: Number; name: String }>;
     status: Number;
 
-    constructor(data: Array<{ id: Number; name: String }>, status: Number) {
-        this.data = data;
+    constructor(senders: Array<{ id: Number; name: String }>, status: Number) {
+        this.senders = senders;
         this.status = status;
+    }
+}
+
+export class OutReachResponseModel {
+    outreach: Array<{ date: Date; handle: String, response: Boolean }>;
+    status: Number;
+
+    constructor(outreach: Array<{ date: Date; handle: String, response: Boolean }>, status: Number) {
+        this.outreach = outreach
+        this.status = status
     }
 }

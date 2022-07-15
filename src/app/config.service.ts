@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ResponseModel } from './models';
+import { OutReachResponseModel, SendersResponseModel } from './models';
 
 
 @Injectable({
@@ -11,6 +11,10 @@ export class ConfigService {
     constructor(private http: HttpClient,) { }
 
     getSenders() {
-        return this.http.get<ResponseModel>('http://localhost:5000/');
+        return this.http.get<SendersResponseModel>('http://localhost:5000/senders');
+    }
+
+    getOutreachResults(){
+        return this.http.get<OutReachResponseModel>('http://localhost:5000/outreach');
     }
 }
