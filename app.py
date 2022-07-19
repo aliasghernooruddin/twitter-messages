@@ -134,8 +134,8 @@ def followup_list_by_recipient_id():
     direct_messages = api.get_direct_messages()
     id = str(api.verify_credentials().id)
     followups = []
-    # if using default message file use this function and comment line 141
-    message_stack = create_conversation_tree(id,direct_messages, api_fetch=False)
+    # if using default message file use this function and comment line 139
+    # message_stack = create_conversation_tree(id,direct_messages, api_fetch=False)
     message_stack = create_conversation_tree(id,direct_messages)
     followups = get_followups(id,message_stack)
     stats = get_stats(id,message_stack)
@@ -165,13 +165,7 @@ def get_stats(id,messageStack):
             if message['sender_id'] == id:
                 mes_sent_in_total+=1
 
-    followups = get_followups(id,messageStack)
-    
-    for followup in followups:
-        recepient = next(iter(followup))
-        if followup[recepient]['followup']:
-            total_followups+=1
-    
+    total_followups = len(get_followups(id,messageStack))    
     outreach = get_outreach(id,messageStack)
     total_initial_messages = len(outreach)
     response_rate  = calculate_response_rate(outreach)
@@ -211,27 +205,14 @@ def create_conversation_tree(id,direct_messages,api_fetch=True):
 def get_followups(id,messageStack):
     '''This function is responsible for extracting the followups from the message stack and return it'''
     followups = []
-    for recepient_id,conversation  in messageStack.items():
-      
-        data = {'response':False,'followup':False,'followup_content':"_"}
-        for message in conversation[::-1]:
-            
-            if data['response']:
-                if not data['followup']:
-             
-                    if message['sender_id'] == id:
-                        print(id)
-                        data['followup'] = True
-                        if data['followup_content'] == '_':
-                            data['followup_content'] = message["message_data"]["text"]
-
-                
-            if message['sender_id'] == recepient_id and message['target']['recipient_id'] == id:
-                data['response'] = True
-            
-    
-        # if data['followup']:
-        followups.append({recepient_id:data,'sender_id':message['sender_id']})
+    for conversation in messageStack.values():
+        if len(conversation) >= 2:
+            if conversation[-1]["sender_id"] == id and conversation[-2]["sender_id"] == id :
+                data = {'followup':True,'followup_content':"_"}
+                if data['followup_content'] == '_':
+                    reverse = conversation[::-1]
+                    data['followup_content'] = reverse[1]["message_data"]["text"]
+                followups.append(data)  
 
     return followups
  
